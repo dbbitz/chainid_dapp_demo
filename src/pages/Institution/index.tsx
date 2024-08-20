@@ -96,7 +96,6 @@ export const Institution = () => {
 
   return (
     <Section>
-      <p>Bem vindos a ChainID, aqui você pode verificar e gerar documentos.</p>
       <div className="flex gap-3">
         <Button
           isSelected={selectedSection === "generate"}
@@ -146,7 +145,7 @@ export const Institution = () => {
                 }
               />
               <Input
-                label="Endereço Blockchain"
+                label="Endereço do estudante na blockchain"
                 value={studentAddress}
                 onChange={(e) => setStudentAddress(e.target.value)}
               />
@@ -221,7 +220,6 @@ export const Institution = () => {
                 </p>
               </span>
             </div>
-            <Button onClick={validateCertificate}>Validar Certificado</Button>
           </div>
         )}
       </div>

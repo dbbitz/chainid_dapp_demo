@@ -2,10 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ConnectWallet } from "../pages/ConectWallet";
 import { Institution } from "../pages/Institution";
-import { Student } from "@phosphor-icons/react";
 import { Employer } from "../pages/Employer";
 import { FirstAccess } from "../pages/FirstAccess";
 import { IssuedCertificate } from "../pages/IssuedCertificate";
+import { Student } from "../pages/Student";
 
 const AppRoutes = () => {
   return (

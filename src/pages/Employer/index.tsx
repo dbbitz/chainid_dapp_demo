@@ -5,8 +5,7 @@ import { Section } from "../../components/Section";
 
 export const Employer = () => {
   const [validateCredential, setValidateCredential] = useState({
-    hash: "",
-    signature: "",
+    hash: ""
   });
 
   
@@ -16,8 +15,7 @@ export const Employer = () => {
     try {
       const requestBody = {
         educationAddress: educationAddress,
-        credentialHash: validateCredential.hash,
-        signature: validateCredential.signature,
+        credentialHash: validateCredential.hash
       };
 
       const response = await fetch(
@@ -63,16 +61,7 @@ export const Employer = () => {
             value={educationAddress}
             onChange={(e) => setEducationAddress(e.target.value)}
             />
-          <Input
-            label="Assinatura"
-            value={validateCredential.signature}
-            onChange={(e) =>
-              setValidateCredential({
-                ...validateCredential,
-                signature: e.target.value,
-              })
-            }
-          />
+          
         </div>
         <Button onClick={validateCertificate}>Validar Certificado</Button>
       </div>
