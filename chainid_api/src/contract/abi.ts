@@ -128,6 +128,48 @@ const contractABI = [
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "_institutionAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_studentAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_credentialHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "revokeCredential",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "student",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "credentialHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "RevokeCredential",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "newAdmin",
 				"type": "address"
 			}

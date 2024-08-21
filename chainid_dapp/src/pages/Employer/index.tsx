@@ -5,21 +5,24 @@ import { Section } from "../../components/Section";
 
 export const Employer = () => {
   const [validateCredential, setValidateCredential] = useState({
-    hash: ""
+    hash: "",
+    signature: "",
   });
 
   
   const [educationAddress, setEducationAddress] = useState<string>();
 
+
   const validateCertificate = async () => {
     try {
       const requestBody = {
         educationAddress: educationAddress,
-        credentialHash: validateCredential.hash
+        credentialHash: validateCredential.hash,
+        signature: validateCredential.signature
       };
 
       const response = await fetch(
-        `http://localhost:3000/api/validate-credential`,
+        `${import.meta.env.VITE_API_URL}/api/validate-credential`,
         {
           method: "POST",
           headers: {
@@ -38,7 +41,7 @@ export const Employer = () => {
       }
     } catch {
       console.error("Error verifying document");
-      alert("Error verifying document");
+      alert("Assinatura inválida");
     }
   };
 
@@ -55,6 +58,16 @@ export const Employer = () => {
                 hash: e.target.value,
               })
             }
+          />
+          <Input
+            label="Assinatura"
+            value={validateCredential.signature}
+            onChange={(e) =>
+              setValidateCredential({
+                ...validateCredential,
+                signature: e.target.value,
+              })
+            } 
           />
           <Input
             label="Endereço da Instituição"

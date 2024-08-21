@@ -23,15 +23,17 @@ export const ConnectWallet = () => {
         // Solicita permissões e contas em sequência
         await provider.request({
           method: "wallet_requestPermissions",
-          params: [{
-            eth_accounts: {}
-          }]
+          params: [
+            {
+              eth_accounts: {},
+            },
+          ],
         });
-  
+
         const accounts = await provider.request({
           method: "eth_requestAccounts",
         });
-  
+
         // Verifica se há mais de uma conta e permite a seleção
         let selectedAccount;
         if (accounts.length > 1) {
@@ -39,12 +41,15 @@ export const ConnectWallet = () => {
           accounts.forEach((account: any, index: any) => {
             accountList += `${index + 1}. ${account}\n`;
           });
-  
+
           const userInput = prompt(accountList, "1");
-  
+
           if (userInput !== null) {
             const selectedAccountIndex = parseInt(userInput) - 1;
-            if (selectedAccountIndex >= 0 && selectedAccountIndex < accounts.length) {
+            if (
+              selectedAccountIndex >= 0 &&
+              selectedAccountIndex < accounts.length
+            ) {
               selectedAccount = accounts[selectedAccountIndex];
             } else {
               selectedAccount = accounts[0];
@@ -55,7 +60,7 @@ export const ConnectWallet = () => {
         } else {
           selectedAccount = accounts[0];
         }
-  
+
         setAccount(selectedAccount);
         console.log("Selected account:", selectedAccount);
         localStorage.setItem("account", selectedAccount);
@@ -71,7 +76,6 @@ export const ConnectWallet = () => {
       );
     }
   };
-  
 
   const checkRole = async () => {
     try {
@@ -90,7 +94,7 @@ export const ConnectWallet = () => {
       };
 
       const response = await fetch(
-        `http://localhost:3000/api/${endPoint[selectedRole]}`,
+        `${import.meta.env.VITE_API_URL}/api/${endPoint[selectedRole]}`,
         {
           method: "POST",
           headers: {

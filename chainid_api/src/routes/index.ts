@@ -35,13 +35,12 @@ router.post(
             credentialDate
         );
 
-        console.log(institutionPrivateKey)
 
         const signatureObject = web3.eth.accounts.sign(credentialHash, institutionPrivateKey);
         const signature = signatureObject.signature;
 
-        console.log("Assinatura gerada: ", signature);
-        console.log("Hash da credencial: ", credentialHash);
+        console.log("signature", signature);
+
 
         const tx = contract.methods.issueCredential(
             educationAddress,
@@ -77,12 +76,41 @@ router.post(
     }
 });
 
+router.post('/revoke-credential', async (req, res) => {
+    const { credentialHash, studentAddress, institutionAddress } = req.body;
+
+    
+    try {
+        const tx = contract.methods.revokeCredential(institutionAddress, studentAddress, credentialHash);
+        const gas = await tx.estimateGas({ from: institutionAddress });
+        const gasPrice = await web3.eth.getGasPrice();
+        const data = tx.encodeABI();
+    
+        const txData = {
+            from: institutionAddress,
+            to: contractAddress,
+            data,
+            gas,
+            gasPrice
+        };
+    
+        const signedTx = await web3.eth.accounts.signTransaction(txData, institutionPrivateKey);
+        const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    
+        res.json({ transactionHash: receipt.transactionHash });
+    } catch (error: any) {
+        console.log(error);
+        res.status(500).send('Erro ao revogar credencial: ' + error.message);
+    }
+    });
+
 router.get('/credential', async (req, res) => {
   try {
 
       const { studentAddress } = req.query;
 
       let credentials: any[] = await contract.methods.getStudentCredentials(studentAddress).call();
+
 
       credentials = credentials.map((cred :any) => {
         return {
@@ -101,14 +129,13 @@ router.get('/credential', async (req, res) => {
 });
 
 router.post('/validate-credential', async (req, res) => {
-  const { credentialHash, educationAddress } = req.body;
-
-  const signatureObject = web3.eth.accounts.sign(credentialHash, institutionPrivateKey);
-  const signature = signatureObject.signature
+  const { credentialHash, educationAddress, signature } = req.body; 
 
   try {
       // Recupera o endereço que assinou o hash
       const recoveredAddress = web3.eth.accounts.recover(credentialHash, signature);
+
+      console.log("recoveredAddress", recoveredAddress);
 
       // Verifica se o endereço recuperado corresponde ao endereço da instituição
       const isValid = recoveredAddress.toLowerCase() === educationAddress.toLowerCase();
@@ -149,7 +176,6 @@ router.post('/set-institution', async (req, res) => {
   try {
       const { institutionAddress, institutionName } = req.body;
 
-      console.log(institutionAddress, institutionName);
 
       const tx = contract.methods.setInstitution(institutionAddress, institutionName);
       const gas = await tx.estimateGas({ from: adminAddress });
@@ -204,7 +230,6 @@ router.post('/set-employer', async (req, res) => {
   try {
       const { employerAddress } = req.body;
 
-      console.log(employerAddress)
 
       const tx = contract.methods.setEmployer(employerAddress);
       const gas = await tx.estimateGas({ from: adminAddress });

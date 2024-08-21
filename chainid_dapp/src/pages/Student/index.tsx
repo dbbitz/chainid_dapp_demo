@@ -28,7 +28,7 @@ export const Student = () => {
   const getCredential = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/credential?studentAddress=${account}`,
+        `${import.meta.env.VITE_API_URL}/api/credential?studentAddress=${account}`,
         {
           method: "GET",
           headers: {
