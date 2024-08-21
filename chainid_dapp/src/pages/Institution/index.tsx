@@ -228,7 +228,7 @@ export const Institution = () => {
               <div className="flex flex-col gap-3">
                 <Input
                   label="Hash da credencial"
-                  value={validateCredential.hash}
+                  value={revokeCredential.hash}
                   onChange={(e) =>
                     setRevokeCredential({
                       ...revokeCredential,
@@ -238,7 +238,7 @@ export const Institution = () => {
                 />
                 <Input
                   label="Endereço do estudante na blockchain"
-                  value={studentAddress}
+                  value={revokeCredential.studentAddress}
                   onChange={(e) => setRevokeCredential({ ...revokeCredential, studentAddress: e.target.value })}
                 />
               </div>
@@ -281,7 +281,7 @@ export const Institution = () => {
                   />
                   <p>Assinatura do documento:</p>
                 </div>
-                <p className="text-wrap max-w-full">
+                <p className="text-wrap max-w-full break-all">
                   <strong>{generatedDocumentSignature}</strong>
                 </p>
               </span>
